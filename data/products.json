@@ -1,0 +1,24 @@
+[
+  {
+    "id": "2ec29a44-61f4-4709-991c-5e8154d53c71",
+    "title": "producto 1 mod",
+    "description": "producto de prueba mod",
+    "code": "xyz",
+    "price": 15.2,
+    "status": true,
+    "stock": 12,
+    "category": "category1",
+    "thumbnails": []
+  },
+  {
+    "id": "4d4b4655-f292-4909-a751-a1ad75fd325d",
+    "title": "producto 2",
+    "description": "producto de prueba 2",
+    "code": "abc",
+    "price": 7.9,
+    "status": true,
+    "stock": 20,
+    "category": "category1",
+    "thumbnails": []
+  }
+]
