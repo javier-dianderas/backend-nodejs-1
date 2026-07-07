@@ -1,7 +1,7 @@
-const dotenv = require("dotenv");
+import dotenv from "dotenv";
 dotenv.config();
 
-const app = require("./app");
+import app from "./app.js";
 
 app.listen(process.env.PORT, () => {
     console.log(`El servicio se ha iniciado en http://localhost:${process.env.PORT}`);

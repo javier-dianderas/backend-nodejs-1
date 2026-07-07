@@ -1,16 +1,20 @@
-const fileManager = require("../utils/fileManager");
-const path = require("path");
-const crypto = require("crypto");
+import { readJson, writeJson} from "../utils/fileManager.js";
+import path from "path";
+import crypto from "crypto";
+import { fileURLToPath } from "url";
+
+const __filename = fileURLToPath(import.meta.url);
+const __dirname = path.dirname(__filename);
 
 const filePath = path.join(__dirname, "../data/products.json");
 
-const getProducts = async () => {
-    return await fileManager.readJson(filePath);
+export const getProducts = async () => {
+    return await readJson(filePath);
 };
 
 
-const getProductById = async (id) => {
-    const products = await fileManager.readJson(filePath);
+export const getProductById = async (id) => {
+    const products = await readJson(filePath);
     return products.find(p => p.id === id);
 };
 
@@ -24,20 +28,20 @@ const getProductById = async (id) => {
 // stock: Number
 // category: String
 // thumbnails: Array de Strings
-const createProduct = async (data) => {
-    const products = await fileManager.readJson(filePath);
+export const createProduct = async (data) => {
+    const products = await readJson(filePath);
 
     const newProduct = {
         id: crypto.randomUUID().toString(),
         ...data
     };
     products.push(newProduct);
-    await fileManager.writeJson(filePath, products);
+    await writeJson(filePath, products);
     return newProduct;
 };
 
-const updateProductById = async (id, data) => {
-    const products = await fileManager.readJson(filePath);
+export const updateProductById = async (id, data) => {
+    const products = await readJson(filePath);
 
     const index = products.findIndex(p => p.id === id);
 
@@ -51,12 +55,12 @@ const updateProductById = async (id, data) => {
         ...data
     };
 
-    await fileManager.writeJson(filePath, products);
+    await writeJson(filePath, products);
     return products[index];
 };
 
-const deleteProductById = async (id) => {
-    const products = await fileManager.readJson(filePath);
+export const deleteProductById = async (id) => {
+    const products = await readJson(filePath);
 
     const exists = products.some(p => p.id === id);
     if(!exists) {
@@ -64,14 +68,6 @@ const deleteProductById = async (id) => {
     }
 
     const newProducts = products.filter(p => p.id !== id);
-    await fileManager.writeJson(filePath, newProducts);
+    await writeJson(filePath, newProducts);
     return true;
 };
-
-module.exports = {
-    getProducts,
-    getProductById,
-    createProduct,
-    updateProductById,
-    deleteProductById
-}

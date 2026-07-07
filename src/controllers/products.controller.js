@@ -1,12 +1,12 @@
-const productsService = require("../services/products.service");
+import * as productsService from "../services/products.service.js";
 
-const getProducts = async (req, res) => {
+export const getProducts = async (req, res) => {
     const products = await productsService.getProducts();
     res.status(200).json({ success: true, data: products});
 };
 
 
-const getProductById = async (req, res) => {
+export const getProductById = async (req, res) => {
     const product = await productsService.getProductById(req.params.id);
     res.status(200).json({ success: true, data: product});
 };
@@ -21,25 +21,17 @@ const getProductById = async (req, res) => {
 // stock: Number
 // category: String
 // thumbnails: Array de Strings
-const createProduct = async (req, res) => {
+export const createProduct = async (req, res) => {
     const newProduct = await productsService.createProduct(req.body);
     res.status(201).json({ success: true, data: newProduct});
 };
 
-const updateProductById = async (req, res) => {
+export const updateProductById = async (req, res) => {
     const updatedProduct = await productsService.updateProductById(req.params.id, req.body);
     res.status(200).json({ success: true, data: updatedProduct});
 };
 
-const deleteProductById = async (req, res) => {
+export const deleteProductById = async (req, res) => {
     const deletedProduct = await productsService.deleteProductById(req.params.id);
     res.status(200).json({ success: true, data: deletedProduct});
 };
-
-module.exports = {
-    getProducts,
-    getProductById,
-    createProduct,
-    updateProductById,
-    deleteProductById
-}

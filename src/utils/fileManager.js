@@ -1,6 +1,6 @@
-const fs = require("fs/promises");
+import fs from "fs/promises";
 
-const readJson = async (filePath) => {
+export const readJson = async (filePath) => {
     try {
         const data = await fs.readFile(filePath, "utf-8");
         return JSON.parse(data);
@@ -10,15 +10,10 @@ const readJson = async (filePath) => {
     return [];
 }
 
-const writeJson = async (filePath, data) => {
+export const writeJson = async (filePath, data) => {
     try {
         await fs.writeFile(filePath, JSON.stringify(data, null, 2));
     } catch(error) {
         console.error("Error escribiendo archivo:", error);
     }
 }
-
-module.exports = {
-    readJson,
-    writeJson
-};

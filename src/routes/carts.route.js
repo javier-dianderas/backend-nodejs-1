@@ -1,23 +1,24 @@
-const express = require("express");
+import express from "express";
+import { getCartById, createCart, deleteCartById, addProductToCartById, deleteProductFromCartById } from "../controllers/carts.controller.js";
+
 const router = express.Router();
-const cartsController = require("../controllers/carts.controller");
 
 // GET carts/id
-router.get("/:id", cartsController.getCartById);
+router.get("/:id", getCartById);
 
 // POST carts/
 // id: String
 // products: []
-router.post("/", cartsController.createCart);
+router.post("/", createCart);
 
-router.delete("/:id", cartsController.deleteCartById);
+router.delete("/:id", deleteCartById);
 
 // POST carts/:id/product/:pid
 // id: String
 // pid: String
 // quantity: Number
-router.post("/:id/product/:pid", cartsController.addProductToCartById);
+router.post("/:id/product/:pid", addProductToCartById);
 
-router.delete("/:id/product/:pid", cartsController.deleteProductFromCartById);
+router.delete("/:id/product/:pid", deleteProductFromCartById);
 
-module.exports = router;
+export default router;

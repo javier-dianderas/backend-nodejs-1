@@ -1,4 +1,4 @@
-const errorMiddleware = (err, req, res, next) => {
+export const errorMiddleware = (err, req, res, next) => {
     console.log("Error", err);
 
     res.status(500).json({
@@ -6,5 +6,3 @@ const errorMiddleware = (err, req, res, next) => {
         error: err.message
     });
 };
-
-module.exports = errorMiddleware;

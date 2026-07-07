@@ -1,8 +1,10 @@
-const express = require("express");
-const multer = require("multer");
-const path = require("path");
-const fs = require("fs");
-const errorMiddleware = require("./middlewares/error.middleware");
+import express from "express";
+import multer from "multer";
+import path from "path";
+import fs from "fs";
+import { errorMiddleware } from "./middlewares/error.middleware.js";
+import productsRoute from "./routes/products.route.js";
+import cartsRoute from "./routes/carts.route.js";
 
 const app = express();
 
@@ -42,13 +44,10 @@ const upload = multer({
 
 app.use(express.json());
 
-const productsRoute = require("./routes/products.route");
-const cartsRoute = require("./routes/carts.route");
-
 app.use("/api/products", productsRoute);
 app.use("/api/carts", cartsRoute);
 
 app.use(errorMiddleware);
 
-module.exports = app;
+export default app;
 

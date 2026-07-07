@@ -1,4 +1,4 @@
-const { z } = require("zod");
+import { z } from "zod";
 
 const productBodySchema = z.object({    
     title: z.string({ error: "El title debe ser de tipo string" }),
@@ -11,4 +11,4 @@ const productBodySchema = z.object({
     thumbnails: z.array(z.string({ error: "El dato debe ser de tipo string" }), { error: "El thumbnails debe ser de tipo array" }).min(0)
 });
 
-module.exports = productBodySchema;
+export default productBodySchema;

@@ -1,17 +1,19 @@
-const express = require("express");
+import express from "express";
+
+import { getProducts, getProductById, createProduct, updateProductById, deleteProductById } from "../controllers/products.controller.js";
+import validate from "../middlewares/validate.middleware.js";
+import productBodySchema from "../schemas/product/product.body.schema.js";
+import productParamsSchema from "../schemas/product/product.params.schema.js";
+
 const router = express.Router();
-const produtcsController = require("../controllers/products.controller");
-const validate = require("../middlewares/validate.middleware");
-const productBodySchema = require("../schemas/product/product.body.schema");
-const productParamsSchema = require("../schemas/product/product.params.schema");
 
 // GET products/
-router.get("/", produtcsController.getProducts);
+router.get("/", getProducts);
 
 // GET products/id
 router.get("/:id"
     , validate(productParamsSchema, "params")
-    , produtcsController.getProductById);
+    , getProductById);
 
 // POST products/
 // id: String
@@ -25,15 +27,15 @@ router.get("/:id"
 // thumbnails: Array de Strings
 router.post("/"
     , validate(productBodySchema)
-    , produtcsController.createProduct);
+    , createProduct);
 
 router.put("/:id"
     , validate(productParamsSchema, "params")
     , validate(productBodySchema)
-    , produtcsController.updateProductById);
+    , updateProductById);
 
 router.delete("/:id"
     , validate(productParamsSchema, "params")
-    , produtcsController.deleteProductById);
+    , deleteProductById);
 
-module.exports = router;
+export default router;

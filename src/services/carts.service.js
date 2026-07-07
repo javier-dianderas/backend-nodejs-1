@@ -1,20 +1,20 @@
-const cartsRepository = require("../repositories/carts.repository");
-const productsRepository = require("../repositories/products.repository");
-const AppError = require("../errors/app.error");
+import * as cartsRepository from "../repositories/carts.repository.js";
+import * as productsRepository from "../repositories/products.repository.js";
+import AppError from "../errors/app.error.js";
 
 // GET carts/id
-const getCartById = async (id) => {
+export const getCartById = async (id) => {
     return await cartsRepository.getCartById(id);
 };
 
 // POST carts/
 // id: String
 // products: []
-const createCart = async () => {
+export const createCart = async () => {
     return await cartsRepository.createCart();
 };
 
-const deleteCartById = async (id) => {
+export const deleteCartById = async (id) => {
     await cartsRepository.deleteCartById(id);
 }
 
@@ -22,7 +22,7 @@ const deleteCartById = async (id) => {
 // id: String
 // pid: String
 // quantity: Number
-const addProductToCartById = async (id, pid, quantity) => {
+export const addProductToCartById = async (id, pid, quantity) => {
     console.log("services id", id);
     console.log("services pid", pid);
     console.log("services quantity", quantity);
@@ -35,14 +35,6 @@ const addProductToCartById = async (id, pid, quantity) => {
     await cartsRepository.addProductToCartById(id, product, quantity);
 };
 
-const deleteProductFromCartById = async (id, pid) => {
+export const deleteProductFromCartById = async (id, pid) => {
     await cartsRepository.deleteProductFromCartById(id, pid);
-};
-
-module.exports = {
-    getCartById,
-    createCart,
-    deleteCartById,
-    addProductToCartById,
-    deleteProductFromCartById
 };
