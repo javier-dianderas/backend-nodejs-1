@@ -1,73 +1,26 @@
-import { readJson, writeJson} from "../utils/fileManager.js";
-import path from "path";
-import crypto from "crypto";
-import { fileURLToPath } from "url";
+import * as productsMongoDao from "../dao/mongo/products.dao.js";
+import * as productsFileDato from "../dao/filesystem/products.dao.js";
+import dotenv from "dotenv";
 
-const __filename = fileURLToPath(import.meta.url);
-const __dirname = path.dirname(__filename);
+dotenv.config();
+const dao = process.env.PERSISTENCE === "MONGO" ? productsMongoDao : productsFileDato;
 
-const filePath = path.join(__dirname, "../data/products.json");
-
-export const getProducts = async () => {
-    return await readJson(filePath);
+export const getProducts = async ({limit, page, category, isAvailable, sort}) => {
+    return await dao.getProducts({limit, page, category, isAvailable, sort});
 };
-
 
 export const getProductById = async (id) => {
-    const products = await readJson(filePath);
-    return products.find(p => p.id === id);
+    return await dao.getProductById(id);
 };
 
-// POST products/
-// id: String
-// title: String
-// description: String
-// code: String
-// price: Number
-// status: Boolean
-// stock: Number
-// category: String
-// thumbnails: Array de Strings
 export const createProduct = async (data) => {
-    const products = await readJson(filePath);
-
-    const newProduct = {
-        id: crypto.randomUUID().toString(),
-        ...data
-    };
-    products.push(newProduct);
-    await writeJson(filePath, products);
-    return newProduct;
+    return await dao.createProduct(data);
 };
 
 export const updateProductById = async (id, data) => {
-    const products = await readJson(filePath);
-
-    const index = products.findIndex(p => p.id === id);
-
-    // No existe
-    if(index === -1) {
-        return null;
-    }
-
-    products[index] = {
-        ...products[index],
-        ...data
-    };
-
-    await writeJson(filePath, products);
-    return products[index];
+    return await dao.updateProductById(id, data);
 };
 
-export const deleteProductById = async (id) => {
-    const products = await readJson(filePath);
-
-    const exists = products.some(p => p.id === id);
-    if(!exists) {
-        return false;
-    }
-
-    const newProducts = products.filter(p => p.id !== id);
-    await writeJson(filePath, newProducts);
-    return true;
+export const deleteProductById = async (id) => {    
+    return await dao.deleteProductById(id);
 };
