@@ -15,7 +15,11 @@ export const createCart = async () => {
 };
 
 export const deleteCartById = async (id) => {
-    await cartsRepository.deleteCartById(id);
+    const cart = cartsRepository.getCartById(id);
+    if(!cart) {
+        throw new AppError(`No existe cart con id ${id}`, 404);
+    }
+    return await cartsRepository.deleteCartById(id);
 }
 
 // POST carts/:id/product/:pid
@@ -27,14 +31,36 @@ export const addProductToCartById = async (id, pid, quantity) => {
     console.log("services pid", pid);
     console.log("services quantity", quantity);
 
+    const cart = await cartsRepository.getCartById(id);
+    if(!cart) {
+        throw new AppError(`No existe cart con id ${id}`, 404);
+    }
+
     const product = await productsRepository.getProductById(pid);
     if(!product) {
         throw new AppError(`No existe product con id ${pid}`, 404);
     }
 
-    await cartsRepository.addProductToCartById(id, product, quantity);
+    console.log("cart", cart);
+    console.log("product", product);
+
+    if(cart.items.some(i => i.product.equals(pid))) {
+        //existe el producto en el carrito, se suman las cantidades
+        return await cartsRepository.addQuantityProductToCartById(id, pid, quantity);
+    }
+    // si no existe el producto se agrega   
+    return await cartsRepository.addProductToCartById(id, pid, quantity);
 };
 
 export const deleteProductFromCartById = async (id, pid) => {
-    await cartsRepository.deleteProductFromCartById(id, pid);
+    const cart = await cartsRepository.getCartById(id);
+    if(!cart) {
+        throw new AppError(`No existe cart con id ${id}`, 404);
+    }
+
+    if(!cart.items.some(i => i.product.equals(pid))) {
+        throw new AppError(`No existe item con product con id ${pid}`, 404);
+    }
+
+    return await cartsRepository.deleteProductFromCartById(id, pid);
 };

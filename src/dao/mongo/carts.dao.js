@@ -1,92 +1,95 @@
-import { readJson, writeJson} from "../../utils/fileManager.js";
-import path from "path";
-import crypto from "crypto";
-import AppError from "../errors/app.error.js";
-import { fileURLToPath } from "url";
+import { CartModel } from "../../models/cart.model.js";
 
-const __filename = fileURLToPath(import.meta.url);
-const __dirname = path.dirname(__filename);
-
-const filePath = path.join(__dirname, "../data/carts.json");
-
-// GET carts/id
-export const getCartById = async (id) => {
-    const carts = await readJson(filePath);
-    return carts.find(p => p.id === id);
+export const getCartById = async (id) => {    
+    return await CartModel.findById(id);
 };
 
-// POST carts/
-// id: String
-// products: []
 export const createCart = async () => {
-    const carts = await readJson(filePath);
-
-    const newCart = {
-        id: crypto.randomUUID().toString(),
+    const data = {
         items: []
     };
-    carts.push(newCart);
-    await writeJson(filePath, carts);
-    return newCart;
+
+    const newCart = await CartModel.create(data);    
+    return {
+        id: newCart._id,
+        items: newCart.items,
+        total: newCart.total
+    };
 };
 
 export const deleteCartById = async (id) => {
-    const carts = await readJson(filePath);
-
-    const exists = carts.some(p => p.id === id);
-    if(!exists) {        
-        throw new AppError(`No existe cart con id ${id}`, 404);
-    }
-
-    const newCarts = carts.filter(p => p.id !== id);
-    await writeJson(filePath, newCarts);
+    const deletedCart = await CartModel.findByIdAndDelete(id);
+    return {
+        id: deletedCart._id,
+        items: deletedCart.items,
+        total: deletedCart.total
+    }; 
 }
 
-// POST carts/:id/product/:pid
-// id: String
-// pid: String
-// quantity: Number
-export const addProductToCartById = async (id, product, data) => {
+export const addProductToCartById = async (id, pid, quantity) => {
+    const updatedCart = await CartModel.findByIdAndUpdate(
+        id,
+        {
+            $push: {
+                items: {
+                    product: pid,
+                    quantity: quantity
+                }
+            }
+        },
+        {
+            new: true
+        }
+    );
 
-    console.log("repo id", id);
-    console.log("repo product", product);
-    console.log("repo quantity", data);
+    return {
+        id: updatedCart._id,
+        items: updatedCart.items,
+        total: updatedCart.total
+    }; 
+};
 
-    const carts = await readJson(filePath);
+export const addQuantityProductToCartById = async (id, pid, quantity) => {
+    const updatedCart = await CartModel.findOneAndUpdate(
+        {
+            _id: id,
+            "items.product": pid
+        },
+        {
+            $inc: {
+                "items.$.quantity": quantity
+            }
+        },
+        {
+            new: true
+        }
+    );
 
-    const cart = carts.find(c => c.id === id);
-    if(!cart) {
-        throw new AppError(`No existe cart con id ${id}`, 404);
-    }
-    const item = cart.items.find(p => p.product.id === product.id);
-    const { quantity } = data;
-    if(item) {
-        item.quantity = quantity;
-    } else {
-        cart.items.push({
-            product: product,
-            quantity: quantity
-        });
-        
-    }
-
-    await writeJson(filePath, carts);
+    return {
+        id: updatedCart._id,
+        items: updatedCart.items,
+        total: updatedCart.total
+    }; 
 };
 
 export const deleteProductFromCartById = async (id, pid) => {
-    const carts = await readJson(filePath);
+    const updatedCart = await CartModel.findByIdAndUpdate(
+        id,
+        {
+            $pull: {
+                items: {
+                    product: pid
+                }
+            }
+        },
+        {
+            new: true
+        }
+    );
 
-    const cart = carts.find(c => c.id === id);
-    if(!cart) {
-        throw new AppError(`No existe cart con id ${id}`, 404);
-    }
-
-    const len = cart.items.length;
-    cart.items = cart.items.filter(p => p.product.id !== pid);
-    
-    if(len === cart.items.length) {
-        throw new AppError(`No existe item con product con id ${pid}`, 404);
-    }
-
-    await writeJson(filePath, carts);
+    return {
+        id: updatedCart._id,
+        items: updatedCart.items,
+        total: updatedCart.total
+    };
 };
