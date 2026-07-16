@@ -18,16 +18,6 @@ export const getProductById = async (id) => {
     return products.find(p => p.id === id);
 };
 
-// POST products/
-// id: String
-// title: String
-// description: String
-// code: String
-// price: Number
-// status: Boolean
-// stock: Number
-// category: String
-// thumbnails: Array de Strings
 export const createProduct = async (data) => {
     const products = await readJson(filePath);
 

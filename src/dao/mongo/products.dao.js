@@ -14,16 +14,32 @@ export const getProducts = async ({limit, page, category, isAvailable, sort}) =>
 
     const sortCriteria = { price: sort};
 
-    const [products, totalItems] = await Promise.all([
+    const [oProducts, totalItems] = await Promise.all([
         ProductModel.find(filter).lean().sort(sortCriteria).skip(skip).limit(limit),
         ProductModel.countDocuments(filter)
     ]);
+
+    const products = oProducts.map(({ _id, ...product }) => ({
+        id: _id,
+        ...product       
+    }));
 
     return { products, totalItems };
 };
 
 export const getProductById = async (id) => {
-    return await ProductModel.findById(id).lean();
+    const product = await ProductModel.findById(id).lean();
+    return {
+        id: product._id,
+        title: product.title,
+        description: product.description,
+        code: product.code,
+        price: product.price,
+        status: product.status,
+        stock: product.stock,
+        category: product.category,
+        thumbnails: product.thumbnails
+    }
 };
 
 export const createProduct = async (data) => {
@@ -61,10 +77,30 @@ export const updateProductById = async (id, data) => {
         }
     );
     
-    return updatedProduct;
+    return {
+        id: updatedProduct._id,
+        title: updatedProduct.title,
+        description: updatedProduct.description,
+        code: updatedProduct.code,
+        price: updatedProduct.price,
+        status: updatedProduct.status,
+        stock: updatedProduct.stock,
+        category: updatedProduct.category,
+        thumbnails: updatedProduct.thumbnails
+    };
 };
 
 export const deleteProductById = async (id) => {    
-    const x = await ProductModel.findByIdAndDelete(id);   
-    console.log("x", x);
+    const deletedProduct = await ProductModel.findByIdAndDelete(id);   
+    return {
+        id: deletedProduct._id,
+        title: deletedProduct.title,
+        description: deletedProduct.description,
+        code: deletedProduct.code,
+        price: deletedProduct.price,
+        status: deletedProduct.status,
+        stock: deletedProduct.stock,
+        category: deletedProduct.category,
+        thumbnails: deletedProduct.thumbnails
+    };
 };
