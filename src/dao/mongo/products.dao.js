@@ -29,6 +29,11 @@ export const getProducts = async ({limit, page, category, isAvailable, sort}) =>
 
 export const getProductById = async (id) => {
     const product = await ProductModel.findById(id).lean();
+
+    if (!product) {
+        return null;
+    }
+
     return {
         id: product._id,
         title: product.title,
@@ -44,6 +49,9 @@ export const getProductById = async (id) => {
 
 export const createProduct = async (data) => {
     const newProduct = await ProductModel.create(data);
+    if (!newProduct) {
+        return null;
+    }
     return {
         id: newProduct._id,
         title: newProduct.title,
@@ -76,6 +84,10 @@ export const updateProductById = async (id, data) => {
             runValidators: true
         }
     );
+
+    if (!updatedProduct) {
+        return null;
+    }
     
     return {
         id: updatedProduct._id,
@@ -91,7 +103,10 @@ export const updateProductById = async (id, data) => {
 };
 
 export const deleteProductById = async (id) => {    
-    const deletedProduct = await ProductModel.findByIdAndDelete(id);   
+    const deletedProduct = await ProductModel.findByIdAndDelete(id);    
+    if (!deletedProduct) {
+        return null;
+    }
     return {
         id: deletedProduct._id,
         title: deletedProduct.title,

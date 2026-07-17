@@ -1,8 +1,7 @@
 import * as cartsService from "../services/carts.service.js";
 
-// GET carts/id
 export const getCartById = async (req, res) => {
-    const cart = await cartsService.getCartById(req.params.id);
+    const cart = await cartsService.getCartById(req.params.cid);
 
     if(!cart) {
         res.status(404).json({ 
@@ -17,9 +16,6 @@ export const getCartById = async (req, res) => {
     });
 };
 
-// POST carts/
-// id: String
-// products: []
 export const createCart = async (req, res) => {
     const newCart = await cartsService.createCart();
     res.status(200).json({ 
@@ -28,29 +24,43 @@ export const createCart = async (req, res) => {
     });
 };
 
-export const deleteCartById = async (req, res) => {
-    const deletedCart = await cartsService.deleteCartById(req.params.id);
-    res.status(200).json({ 
-        status: "success",
-        payload: deletedCart
-    });
-};
-
-// POST carts/:id/product/:pid
-// id: String
-// pid: String
-// quantity: Number
-export const addProductToCartById = async (req, res) => {
-    const { quantity } = req.body;
-    const updatedCart = await cartsService.addProductToCartById(req.params.id, req.params.pid, quantity);
+export const updateProductsCartById = async (req, res) => {
+    const { items } = req.body;
+    const updatedCart = await cartsService.updateProductsCartById(req.params.cid, items);
     res.status(200).json({ 
         success: "success",
         payload: updatedCart
     });
 };
 
+export const deleteCartById = async (req, res) => {
+    const deletedCart = await cartsService.deleteCartById(req.params.cid);
+    res.status(200).json({ 
+        status: "success",
+        payload: deletedCart
+    });
+};
+
+export const addProductToCartById = async (req, res) => {
+    const { quantity } = req.body;
+    const updatedCart = await cartsService.addProductToCartById(req.params.cid, req.params.pid, quantity);
+    res.status(200).json({ 
+        success: "success",
+        payload: updatedCart
+    });
+};
+
+export const updateQuantityProductToCartById = async (req, res) => {
+    const { quantity } = req.body;
+    const updatedCart = await cartsService.updateQuantityProductToCartById(req.params.cid, req.params.pid, quantity);
+    res.status(200).json({ 
+        success: "success",
+        payload: updatedCart
+    });
+}
+
 export const deleteProductFromCartById = async (req, res) => {
-    const updatedCart = await cartsService.deleteProductFromCartById(req.params.id, req.params.pid);
+    const updatedCart = await cartsService.deleteProductFromCartById(req.params.cid, req.params.pid);
     res.status(200).json({ 
         success: "success",
         payload: updatedCart

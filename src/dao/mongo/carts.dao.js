@@ -1,7 +1,7 @@
 import { CartModel } from "../../models/cart.model.js";
 
-export const getCartById = async (id) => {    
-    return await CartModel.findById(id);
+export const getCartById = async (cid) => {    
+    return await CartModel.findById(cid);
 };
 
 export const createCart = async () => {
@@ -9,7 +9,12 @@ export const createCart = async () => {
         items: []
     };
 
-    const newCart = await CartModel.create(data);    
+    const newCart = await CartModel.create(data);
+    
+    if (!newCart) {
+        return null;
+    }
+
     return {
         id: newCart._id,
         items: newCart.items,
@@ -17,8 +22,35 @@ export const createCart = async () => {
     };
 };
 
-export const deleteCartById = async (id) => {
-    const deletedCart = await CartModel.findByIdAndDelete(id);
+export const updateProductsCartById = async (cid, items) => {
+    const updatedCart = await CartModel.findByIdAndUpdate(
+        cid,
+        {
+            $set: {
+                items: items
+            }
+        },
+        {
+            returnDocument: "after"
+        }
+    );
+
+    if (!updatedCart) {
+        return null;
+    }
+
+    return {
+        id: updatedCart._id,
+        items: updatedCart.items,
+        total: updatedCart.total
+    }; 
+}
+
+export const deleteCartById = async (cid) => {
+    const deletedCart = await CartModel.findByIdAndDelete(cid);
+    if (!deletedCart) {
+        return null;
+    }
     return {
         id: deletedCart._id,
         items: deletedCart.items,
@@ -26,9 +58,9 @@ export const deleteCartById = async (id) => {
     }; 
 }
 
-export const addProductToCartById = async (id, pid, quantity) => {
+export const addProductToCartById = async (cid, pid, quantity) => {
     const updatedCart = await CartModel.findByIdAndUpdate(
-        id,
+        cid,
         {
             $push: {
                 items: {
@@ -38,9 +70,13 @@ export const addProductToCartById = async (id, pid, quantity) => {
             }
         },
         {
-            new: true
+            returnDocument: "after"
         }
     );
+
+    if (!updatedCart) {
+        return null;
+    }
 
     return {
         id: updatedCart._id,
@@ -49,10 +85,10 @@ export const addProductToCartById = async (id, pid, quantity) => {
     }; 
 };
 
-export const addQuantityProductToCartById = async (id, pid, quantity) => {
+export const addQuantityProductToCartById = async (cid, pid, quantity) => {
     const updatedCart = await CartModel.findOneAndUpdate(
         {
-            _id: id,
+            _id: cid,
             "items.product": pid
         },
         {
@@ -61,9 +97,13 @@ export const addQuantityProductToCartById = async (id, pid, quantity) => {
             }
         },
         {
-            new: true
+            returnDocument: "after"
         }
     );
+
+    if (!updatedCart) {
+        return null;
+    }
 
     return {
         id: updatedCart._id,
@@ -72,9 +112,36 @@ export const addQuantityProductToCartById = async (id, pid, quantity) => {
     }; 
 };
 
-export const deleteProductFromCartById = async (id, pid) => {
+export const updateQuantityProductToCartById = async (cid, pid, quantity) => {
+    const updatedCart = await CartModel.findOneAndUpdate(
+        {
+            _id: cid,
+            "items.product": pid
+        },
+        {
+            $set: {
+                "items.$.quantity": quantity
+            }
+        },
+        {
+            returnDocument: "after"
+        }
+    );
+
+    if (!updatedCart) {
+        return null;
+    }
+
+    return {
+        id: updatedCart._id,
+        items: updatedCart.items,
+        total: updatedCart.total
+    };
+};
+
+export const deleteProductFromCartById = async (cid, pid) => {
     const updatedCart = await CartModel.findByIdAndUpdate(
-        id,
+        cid,
         {
             $pull: {
                 items: {
@@ -83,9 +150,13 @@ export const deleteProductFromCartById = async (id, pid) => {
             }
         },
         {
-            new: true
+            returnDocument: "after"
         }
     );
+
+    if (!updatedCart) {
+        return null;
+    }
 
     return {
         id: updatedCart._id,
