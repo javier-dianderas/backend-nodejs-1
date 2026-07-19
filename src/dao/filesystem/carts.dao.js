@@ -1,7 +1,7 @@
 import { readJson, writeJson} from "../../utils/fileManager.js";
 import path from "path";
 import crypto from "crypto";
-import AppError from "../../errors/app.error.js";
+import { AppError } from "../../errors/app.error.js";
 import { fileURLToPath } from "url";
 
 const __filename = fileURLToPath(import.meta.url);

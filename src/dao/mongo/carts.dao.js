@@ -1,7 +1,8 @@
 import { CartModel } from "../../models/cart.model.js";
 
 export const getCartById = async (cid) => {    
-    return await CartModel.findById(cid);
+    const cart = await CartModel.findById(cid).populate("items.product", "_id title price").lean();
+    return cart;
 };
 
 export const createCart = async () => {
@@ -10,52 +11,27 @@ export const createCart = async () => {
     };
 
     const newCart = await CartModel.create(data);
-    
-    if (!newCart) {
-        return null;
-    }
-
-    return {
-        id: newCart._id,
-        items: newCart.items,
-        total: newCart.total
-    };
+    return newCart.toObject();
 };
 
-export const updateProductsCartById = async (cid, items) => {
+export const updateProductsCartById = async (cid, newItems) => {
     const updatedCart = await CartModel.findByIdAndUpdate(
         cid,
         {
             $set: {
-                items: items
+                items: newItems
             }
         },
         {
             returnDocument: "after"
         }
-    );
-
-    if (!updatedCart) {
-        return null;
-    }
-
-    return {
-        id: updatedCart._id,
-        items: updatedCart.items,
-        total: updatedCart.total
-    }; 
+    ).populate("items.product", "_id title price").lean();
+    return updatedCart;
 }
 
 export const deleteCartById = async (cid) => {
-    const deletedCart = await CartModel.findByIdAndDelete(cid);
-    if (!deletedCart) {
-        return null;
-    }
-    return {
-        id: deletedCart._id,
-        items: deletedCart.items,
-        total: deletedCart.total
-    }; 
+    const deletedCart = await CartModel.findByIdAndDelete(cid).populate("items.product", "_id title price").lean();
+    return deletedCart;
 }
 
 export const addProductToCartById = async (cid, pid, quantity) => {
@@ -72,17 +48,8 @@ export const addProductToCartById = async (cid, pid, quantity) => {
         {
             returnDocument: "after"
         }
-    );
-
-    if (!updatedCart) {
-        return null;
-    }
-
-    return {
-        id: updatedCart._id,
-        items: updatedCart.items,
-        total: updatedCart.total
-    }; 
+    ).populate("items.product", "_id title price").lean();
+    return updatedCart;
 };
 
 export const addQuantityProductToCartById = async (cid, pid, quantity) => {
@@ -99,17 +66,8 @@ export const addQuantityProductToCartById = async (cid, pid, quantity) => {
         {
             returnDocument: "after"
         }
-    );
-
-    if (!updatedCart) {
-        return null;
-    }
-
-    return {
-        id: updatedCart._id,
-        items: updatedCart.items,
-        total: updatedCart.total
-    }; 
+    ).populate("items.product", "_id title price").lean();
+    return updatedCart;
 };
 
 export const updateQuantityProductToCartById = async (cid, pid, quantity) => {
@@ -126,17 +84,8 @@ export const updateQuantityProductToCartById = async (cid, pid, quantity) => {
         {
             returnDocument: "after"
         }
-    );
-
-    if (!updatedCart) {
-        return null;
-    }
-
-    return {
-        id: updatedCart._id,
-        items: updatedCart.items,
-        total: updatedCart.total
-    };
+    ).populate("items.product", "_id title price").lean();
+    return updatedCart;
 };
 
 export const deleteProductFromCartById = async (cid, pid) => {
@@ -152,15 +101,6 @@ export const deleteProductFromCartById = async (cid, pid) => {
         {
             returnDocument: "after"
         }
-    );
-
-    if (!updatedCart) {
-        return null;
-    }
-
-    return {
-        id: updatedCart._id,
-        items: updatedCart.items,
-        total: updatedCart.total
-    };
+    ).populate("items.product", "_id title price").lean();
+    return updatedCart;
 };

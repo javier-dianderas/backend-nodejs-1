@@ -23,7 +23,5 @@ export const validate = (schema, property) => (req, res, next) => {
         });
     }
 
-    req[property] = result.data;
-
     next();
 };

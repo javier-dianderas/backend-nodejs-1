@@ -1,3 +1,6 @@
+import mongoose from "mongoose";
+import { AppError } from "../errors/app.error.js";
+
 export const errorMiddleware = (err, req, res, next) => {
     console.log("Error", err);
 

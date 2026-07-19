@@ -14,59 +14,25 @@ export const getProducts = async ({limit, page, category, isAvailable, sort}) =>
 
     const sortCriteria = { price: sort};
 
-    const [oProducts, totalItems] = await Promise.all([
+    const [products, totalItems] = await Promise.all([
         ProductModel.find(filter).lean().sort(sortCriteria).skip(skip).limit(limit),
         ProductModel.countDocuments(filter)
     ]);
-
-    const products = oProducts.map(({ _id, ...product }) => ({
-        id: _id,
-        ...product       
-    }));
 
     return { products, totalItems };
 };
 
 export const getProductById = async (id) => {
     const product = await ProductModel.findById(id).lean();
-
-    if (!product) {
-        return null;
-    }
-
-    return {
-        id: product._id,
-        title: product.title,
-        description: product.description,
-        code: product.code,
-        price: product.price,
-        status: product.status,
-        stock: product.stock,
-        category: product.category,
-        thumbnails: product.thumbnails
-    }
+    return product;
 };
 
 export const createProduct = async (data) => {
     const newProduct = await ProductModel.create(data);
-    if (!newProduct) {
-        return null;
-    }
-    return {
-        id: newProduct._id,
-        title: newProduct.title,
-        description: newProduct.description,
-        code: newProduct.code,
-        price: newProduct.price,
-        status: newProduct.status,
-        stock: newProduct.stock,
-        category: newProduct.category,
-        thumbnails: newProduct.thumbnails
-    };
+    return newProduct.toObject();
 };
 
 export const updateProductById = async (id, data) => {
-    
     const updatedProduct = await ProductModel.findByIdAndUpdate(
         id,
         {
@@ -84,38 +50,10 @@ export const updateProductById = async (id, data) => {
             runValidators: true
         }
     );
-
-    if (!updatedProduct) {
-        return null;
-    }
-    
-    return {
-        id: updatedProduct._id,
-        title: updatedProduct.title,
-        description: updatedProduct.description,
-        code: updatedProduct.code,
-        price: updatedProduct.price,
-        status: updatedProduct.status,
-        stock: updatedProduct.stock,
-        category: updatedProduct.category,
-        thumbnails: updatedProduct.thumbnails
-    };
+    return updatedProduct.toObject();
 };
 
 export const deleteProductById = async (id) => {    
-    const deletedProduct = await ProductModel.findByIdAndDelete(id);    
-    if (!deletedProduct) {
-        return null;
-    }
-    return {
-        id: deletedProduct._id,
-        title: deletedProduct.title,
-        description: deletedProduct.description,
-        code: deletedProduct.code,
-        price: deletedProduct.price,
-        status: deletedProduct.status,
-        stock: deletedProduct.stock,
-        category: deletedProduct.category,
-        thumbnails: deletedProduct.thumbnails
-    };
+    const deletedProduct = await ProductModel.findByIdAndDelete(id);
+    return deletedProduct.toObject();
 };

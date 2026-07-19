@@ -27,6 +27,14 @@ export const createCart = async (req, res) => {
 export const updateProductsCartById = async (req, res) => {
     const { items } = req.body;
     const updatedCart = await cartsService.updateProductsCartById(req.params.cid, items);
+
+    // if(!updatedCart) {
+    //     return res.status(404).json({ 
+    //         status: "error", 
+    //         message: "El cart no fue encontrado"
+    //     }); 
+    // }
+
     res.status(200).json({ 
         success: "success",
         payload: updatedCart

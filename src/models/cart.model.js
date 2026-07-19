@@ -12,10 +12,15 @@ const cartItemSchema = new mongoose.Schema({
     }
 });
 
-const cartSchema = new mongoose.Schema({
-    items: {
-        type: [cartItemSchema]
+const cartSchema = new mongoose.Schema(
+    {
+        items: {
+            type: [cartItemSchema]
+        }
+    },
+    {
+        timestamps: true
     }
-});
+);
 
 export const CartModel = mongoose.model("Cart", cartSchema);
