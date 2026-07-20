@@ -1,10 +1,10 @@
 import express from "express";
-import { getCartById, createCart, deleteCartById, addProductToCartById, deleteProductFromCartById, updateQuantityProductToCartById, updateProductsCartById } from "../controllers/carts.controller.js";
-import { validate } from "../middlewares/validate.middleware.js";
-import cartParamsSchema from "../schemas/cart/cart.params.schema.js";
-import cartProductParamsSchema from "../schemas/cart/cartProduct.params.schema.js";
-import cartItemsBodySchema from "../schemas/cart/cartItems.body.schema.js";
-import cartQuantityItemSchema from "../schemas/cart/cartQuantityItem.body.schema.js";
+import { getCartById, createCart, deleteCartById, addProductToCartById, deleteProductFromCartById, updateQuantityProductToCartById, updateProductsCartById } from "../../controllers/carts.controller.js";
+import { validate } from "../../middlewares/validate.middleware.js";
+import cartParamsSchema from "../../schemas/cart/cart.params.schema.js";
+import cartProductParamsSchema from "../../schemas/cart/cartProduct.params.schema.js";
+import cartItemsBodySchema from "../../schemas/cart/cartItems.body.schema.js";
+import cartQuantityItemSchema from "../../schemas/cart/cartQuantityItem.body.schema.js";
 
 const router = express.Router();
 

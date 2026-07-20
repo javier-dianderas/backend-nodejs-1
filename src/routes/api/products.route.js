@@ -1,9 +1,9 @@
 import express from "express";
-import { getProducts, getProductById, createProduct, updateProductById, deleteProductById } from "../controllers/products.controller.js";
-import { validate } from "../middlewares/validate.middleware.js";
-import productBodySchema from "../schemas/product/product.body.schema.js";
-import productParamsSchema from "../schemas/product/product.params.schema.js";
-import productQuerySchema from "../schemas/product/product.query.schema.js";
+import { getProducts, getProductById, createProduct, updateProductById, deleteProductById } from "../../controllers/products.controller.js";
+import { validate } from "../../middlewares/validate.middleware.js";
+import productBodySchema from "../../schemas/product/product.body.schema.js";
+import productParamsSchema from "../../schemas/product/product.params.schema.js";
+import productQuerySchema from "../../schemas/product/product.query.schema.js";
 
 const router = express.Router();
 

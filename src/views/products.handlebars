@@ -1,0 +1,23 @@
+<h1>Productos</h1>
+
+{{#each productsDto}}
+<div class="card">
+    <h2>{{title}}</h2>
+    <p>{{price}}</p>
+
+    <a href="/products/{{id}}">
+        Ver detalle
+    </a>
+</div>
+{{/each}}
+
+{{#if hasPrevPage}}
+<a href="{{prevLink}}">Anterior</a>
+{{/if}}
+
+{{#if hasNextPage}}
+<a href="{{nextLink}}">Siguiente</a>
+{{/if}}
+
+<script src="/socket.io/socket.io.js"></script>
+<script src="/js/products.js"></script>

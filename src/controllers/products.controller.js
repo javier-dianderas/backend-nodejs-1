@@ -1,5 +1,6 @@
 import * as productsService from "../services/products.service.js";
 import { buildLink } from "../utils/links.js";
+import { getSocket } from "../sockets/socket.js";
 
 export const getProducts = async (req, res) => {
 
@@ -38,6 +39,8 @@ export const getProductById = async (req, res) => {
 
 export const createProduct = async (req, res) => {
     const newProduct = await productsService.createProduct(req.body);
+    const io = getSocket();
+    io.emit("productsUpdated", newProduct.id);
     res.status(201).json({ 
         status: "success", 
         payload: newProduct
@@ -46,6 +49,8 @@ export const createProduct = async (req, res) => {
 
 export const updateProductById = async (req, res) => {
     const updatedProduct = await productsService.updateProductById(req.params.id, req.body);
+    const io = getSocket();
+    io.emit("productsUpdated", updatedProduct.id);
     res.status(200).json({ 
         status: "success", 
         payload: updatedProduct
@@ -54,6 +59,8 @@ export const updateProductById = async (req, res) => {
 
 export const deleteProductById = async (req, res) => {
     const deletedProduct = await productsService.deleteProductById(req.params.id);
+    const io = getSocket();
+    io.emit("productsUpdated", deletedProduct.id);
     res.status(200).json({ 
         status: "success", 
         payload: deletedProduct

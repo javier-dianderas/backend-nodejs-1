@@ -1,4 +1,5 @@
 import * as cartsService from "../services/carts.service.js";
+import { getSocket } from "../sockets/socket.js";
 
 export const getCartById = async (req, res) => {
     const cart = await cartsService.getCartById(req.params.cid);
@@ -28,15 +29,8 @@ export const updateProductsCartById = async (req, res) => {
     const { items } = req.body;
     const updatedCart = await cartsService.updateProductsCartById(req.params.cid, items);
 
-    // if(!updatedCart) {
-    //     return res.status(404).json({ 
-    //         status: "error", 
-    //         message: "El cart no fue encontrado"
-    //     }); 
-    // }
-
     res.status(200).json({ 
-        success: "success",
+        status: "success",
         payload: updatedCart
     });
 };
@@ -53,7 +47,7 @@ export const addProductToCartById = async (req, res) => {
     const { quantity } = req.body;
     const updatedCart = await cartsService.addProductToCartById(req.params.cid, req.params.pid, quantity);
     res.status(200).json({ 
-        success: "success",
+        status: "success",
         payload: updatedCart
     });
 };
@@ -61,16 +55,21 @@ export const addProductToCartById = async (req, res) => {
 export const updateQuantityProductToCartById = async (req, res) => {
     const { quantity } = req.body;
     const updatedCart = await cartsService.updateQuantityProductToCartById(req.params.cid, req.params.pid, quantity);
+    const io = getSocket();
+    io.emit("cartUpdated", updatedCart.id);
+
     res.status(200).json({ 
-        success: "success",
+        status: "success",
         payload: updatedCart
     });
 }
 
 export const deleteProductFromCartById = async (req, res) => {
     const updatedCart = await cartsService.deleteProductFromCartById(req.params.cid, req.params.pid);
+    const io = getSocket();
+    io.emit("cartUpdated", updatedCart.id);
     res.status(200).json({ 
-        success: "success",
+        status: "success",
         payload: updatedCart
     });
 };

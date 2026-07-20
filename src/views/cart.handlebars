@@ -1,0 +1,32 @@
+<h1>Mi carrito</h1>
+
+<input type="hidden" id="cartId" value="{{cart.id}}">
+
+{{#each cart.items}}
+<div>
+
+    {{product.title}}
+
+    x {{quantity}}
+
+    = {{product.price}}
+
+    <button class="btn-add-1" data-product-id="{{product.id}}" data-quantity="{{quantity}}">
+        Incrementar 1
+    </button>
+    <button class="btn-minus-1" data-product-id="{{product.id}}" data-quantity="{{quantity}}">
+        Disminuir 1
+    </button>
+    <button class="btn-remove" data-product-id="{{product.id}}">
+        Eliminar
+    </button>
+</div>
+{{/each}}
+
+<a href="/products">
+    Volver al catálogo
+</a>
+
+<script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+<script src="/socket.io/socket.io.js"></script>
+<script src="/js/cart.js"></script>
