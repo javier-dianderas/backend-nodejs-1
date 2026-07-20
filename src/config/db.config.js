@@ -17,6 +17,14 @@ export const connectDB = async () => {
     }
 }
 
+export const disconnectDB = async () => {
+    try {
+        await mongoose.disconnect();
+    } catch (error) {
+        console.error('❌ Falló la desconexión a la base de datos:', error.message);
+    }
+}
+
 const db = mongoose.connection;
 const maskedURI = MONGODB_URI.replace(/:([^@]+)@/, ':****@');
 
