@@ -8,35 +8,55 @@ const __dirname = path.dirname(__filename);
 
 const filePath = path.join(__dirname, "../data/products.json");
 
-export const getProducts = async () => {
-    return await readJson(filePath);
-};
+export const getProducts = async ({ limit, page, category, isAvailable, sort }) => {
+    let products = await readJson(filePath);
 
+    if (category) {
+        products = products.filter(p => p.category === category);
+    }
+
+    if (isAvailable) {
+        products = products.filter(p => p.stock > 0);
+    }
+
+    products.sort((a, b) => (a.price - b.price) * sort);
+
+    const totalItems = products.length;
+
+    const skip = (page - 1) * limit;
+
+    return {
+        products: products.slice(skip, skip + limit),
+        totalItems
+    };
+};
 
 export const getProductById = async (id) => {
     const products = await readJson(filePath);
-    return products.find(p => p.id === id);
+    return products.find(p => p._id === id) ?? null;
 };
 
 export const createProduct = async (data) => {
     const products = await readJson(filePath);
 
     const newProduct = {
-        id: crypto.randomUUID().toString(),
+        _id: crypto.randomUUID(),
         ...data
     };
+
     products.push(newProduct);
+
     await writeJson(filePath, products);
+
     return newProduct;
 };
 
 export const updateProductById = async (id, data) => {
     const products = await readJson(filePath);
 
-    const index = products.findIndex(p => p.id === id);
+    const index = products.findIndex(p => p._id === id);
 
-    // No existe
-    if(index === -1) {
+    if (index === -1) {
         return null;
     }
 
@@ -46,18 +66,24 @@ export const updateProductById = async (id, data) => {
     };
 
     await writeJson(filePath, products);
+
     return products[index];
 };
 
 export const deleteProductById = async (id) => {
     const products = await readJson(filePath);
 
-    const exists = products.some(p => p.id === id);
-    if(!exists) {
-        return false;
+    const index = products.findIndex(p => p._id === id);
+
+    if (index === -1) {
+        return null;
     }
 
-    const newProducts = products.filter(p => p.id !== id);
-    await writeJson(filePath, newProducts);
-    return true;
+    const deletedProduct = products[index];
+
+    products.splice(index, 1);
+
+    await writeJson(filePath, products);
+
+    return deletedProduct;
 };

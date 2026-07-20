@@ -7,86 +7,126 @@ import { fileURLToPath } from "url";
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
 
-const filePath = path.join(__dirname, "../data/carts.json");
+const cartsFilePath = path.join(__dirname, "../data/carts.json");
+const productsFilePath = path.join(__dirname, "../data/products.json");
 
-// GET carts/id
-export const getCartById = async (id) => {
-    const carts = await readJson(filePath);
-    return carts.find(p => p.id === id);
+const populateCart = async (cart) => {
+    if (!cart) {
+        return null;
+    }
+    const products = await readJson(productsFilePath);
+    return {
+        ...cart,
+        items: cart.items.map(item => {
+            const product = products.find(p => p._id === item.product);
+            return {
+                ...item,
+                product: product
+                    ? {
+                        _id: product._id,
+                        title: product.title,
+                        code: product.code,
+                        stock: product.stock,
+                        price: product.price,
+                        thumbnails: product.thumbnails
+                    }
+                    : null
+            };
+        })
+    };
 };
 
-// POST carts/
-// id: String
-// products: []
-export const createCart = async () => {
-    const carts = await readJson(filePath);
+export const getCartById = async (cid) => {
+    const carts = await readJson(cartsFilePath);
+    const cart = carts.find(c => c._id === cid);
+    return await populateCart(cart);
+};
 
+export const createCart = async () => {
+    const carts = await readJson(cartsFilePath);
     const newCart = {
-        id: crypto.randomUUID().toString(),
+        _id: crypto.randomUUID(),
         items: []
     };
     carts.push(newCart);
-    await writeJson(filePath, carts);
+    await writeJson(cartsFilePath, carts);
     return newCart;
 };
 
-export const deleteCartById = async (id) => {
-    const carts = await readJson(filePath);
-
-    const exists = carts.some(p => p.id === id);
-    if(!exists) {        
-        throw new AppError(`No existe cart con id ${id}`, 404);
+export const updateProductsCartById = async (cid, newItems) => {
+    const carts = await readJson(cartsFilePath);
+    const cart = carts.find(c => c._id === cid);
+    if (!cart) {
+        return null;
     }
-
-    const newCarts = carts.filter(p => p.id !== id);
-    await writeJson(filePath, newCarts);
-}
-
-// POST carts/:id/product/:pid
-// id: String
-// pid: String
-// quantity: Number
-export const addProductToCartById = async (id, product, data) => {
-
-    console.log("repo id", id);
-    console.log("repo product", product);
-    console.log("repo quantity", data);
-
-    const carts = await readJson(filePath);
-
-    const cart = carts.find(c => c.id === id);
-    if(!cart) {
-        throw new AppError(`No existe cart con id ${id}`, 404);
-    }
-    const item = cart.items.find(p => p.product.id === product.id);
-    const { quantity } = data;
-    if(item) {
-        item.quantity = quantity;
-    } else {
-        cart.items.push({
-            product: product,
-            quantity: quantity
-        });
-        
-    }
-
-    await writeJson(filePath, carts);
+    cart.items = newItems;
+    await writeJson(cartsFilePath, carts);
+    return await populateCart(cart);
 };
 
-export const deleteProductFromCartById = async (id, pid) => {
-    const carts = await readJson(filePath);
-
-    const cart = carts.find(c => c.id === id);
-    if(!cart) {
-        throw new AppError(`No existe cart con id ${id}`, 404);
+export const deleteCartById = async (cid) => {
+    const carts = await readJson(cartsFilePath);
+    const index = carts.findIndex(c => c._id === cid);
+    if (index === -1) {
+        return null;
     }
+    const deletedCart = carts[index];
+    carts.splice(index, 1);
+    await writeJson(cartsFilePath, carts);
+    return await populateCart(deletedCart);
+};
 
-    const len = cart.items.length;
-    cart.items = cart.items.filter(p => p.product.id !== pid);
-    
-    if(len === cart.items.length) {
-        throw new AppError(`No existe item con product con id ${pid}`, 404);
+export const addProductToCartById = async (cid, pid, quantity) => {
+    const carts = await readJson(cartsFilePath);
+    const cart = carts.find(c => c._id === cid);
+    if (!cart) {
+        return null;
     }
+    cart.items.push({
+        product: pid,
+        quantity
+    });
+    await writeJson(cartsFilePath, carts);
+    return await populateCart(cart);
+};
 
-    await writeJson(filePath, carts);
+export const addQuantityProductToCartById = async (cid, pid, quantity) => {
+    const carts = await readJson(cartsFilePath);
+    const cart = carts.find(c => c._id === cid);
+    if (!cart) {
+        return null;
+    }
+    const item = cart.items.find(i => i.product === pid);
+    if (!item) {
+        return null;
+    }
+    item.quantity += quantity;
+    await writeJson(cartsFilePath, carts);
+    return await populateCart(cart);
+};
+
+export const updateQuantityProductToCartById = async (cid, pid, quantity) => {
+    const carts = await readJson(cartsFilePath);
+    const cart = carts.find(c => c._id === cid);
+    if (!cart) {
+        return null;
+    }
+    const item = cart.items.find(i => i.product === pid);
+    if (!item) {
+        return null;
+    }
+    item.quantity = quantity;
+    await writeJson(cartsFilePath, carts);
+    return await populateCart(cart);
+};
+
+export const deleteProductFromCartById = async (cid, pid) => {
+    const carts = await readJson(cartsFilePath);
+    const cart = carts.find(c => c._id === cid);
+    if (!cart) {
+        return null;
+    }
+    cart.items = cart.items.filter(i => i.product !== pid);
+    await writeJson(cartsFilePath, carts);
+    return await populateCart(cart);
 };

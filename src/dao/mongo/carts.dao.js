@@ -25,12 +25,12 @@ export const updateProductsCartById = async (cid, newItems) => {
         {
             returnDocument: "after"
         }
-    ).populate("items.product", "_id title price").lean();
+    ).populate("items.product", "_id title code stock price thumbnails").lean();
     return updatedCart;
 }
 
 export const deleteCartById = async (cid) => {
-    const deletedCart = await CartModel.findByIdAndDelete(cid).populate("items.product", "_id title price").lean();
+    const deletedCart = await CartModel.findByIdAndDelete(cid).populate("items.product", "_id title code stock price thumbnails").lean();
     return deletedCart;
 }
 
@@ -48,7 +48,7 @@ export const addProductToCartById = async (cid, pid, quantity) => {
         {
             returnDocument: "after"
         }
-    ).populate("items.product", "_id title price").lean();
+    ).populate("items.product", "_id title code stock price thumbnails").lean();
     return updatedCart;
 };
 
@@ -66,7 +66,7 @@ export const addQuantityProductToCartById = async (cid, pid, quantity) => {
         {
             returnDocument: "after"
         }
-    ).populate("items.product", "_id title price").lean();
+    ).populate("items.product", "_id title code stock price thumbnails").lean();
     return updatedCart;
 };
 
@@ -84,7 +84,7 @@ export const updateQuantityProductToCartById = async (cid, pid, quantity) => {
         {
             returnDocument: "after"
         }
-    ).populate("items.product", "_id title price").lean();
+    ).populate("items.product", "_id title code stock price thumbnails").lean();
     return updatedCart;
 };
 
@@ -101,6 +101,6 @@ export const deleteProductFromCartById = async (cid, pid) => {
         {
             returnDocument: "after"
         }
-    ).populate("items.product", "_id title price").lean();
+    ).populate("items.product", "_id title code stock price thumbnails").lean();
     return updatedCart;
 };
