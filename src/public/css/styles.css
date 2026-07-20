@@ -1,0 +1,402 @@
+/* main */
+
+.main {
+    max-width: 1200px;
+    margin: 0 auto;    
+}
+
+.container {
+    display: grid;    
+    grid-template-columns: 1fr auto;
+    gap: 10px;
+}
+
+.filters {
+    grid-column-start: 1;
+    grid-column-end: auto;
+}
+
+.filtersTitle {
+    box-shadow: 0 2px 4px 0 rgba(0, 0, 0, 0.1);
+    padding: 10px;
+    font-size: 1rem;
+    font-weight: bold;
+}
+
+.filtersGroup {    
+    padding: 10px;    
+    border-radius: 5px;
+    margin: 0.5rem;
+    box-shadow: 0 2px 4px 0 rgba(0, 0, 0, 0.1);
+}
+
+.filtersGroup label {
+    display: block;
+    font-size: 1rem;
+}
+
+.filtersGroupRange {
+    display: flex;
+    flex-direction: row;
+}
+
+.filtersGroupRange > input {
+    width: 60px;
+}
+
+.results {
+    grid-column-start: 2;
+    grid-column-end: auto;
+    display: flex;
+    flex-direction: column;
+}
+
+.resultsBar {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    box-shadow: 0 2px 4px 0 rgba(0, 0, 0, 0.1);
+    padding: 10px;
+}
+
+.resultsContent {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 0.5rem;
+}
+
+/*  */
+/* navbar */
+
+.navbar {
+    background: rgb(200, 41, 37);
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    padding: 0 5px;
+}
+
+.navbar .navbarMenu {
+        display: flex;
+}
+
+.navbar .navbarMenu a {        
+    text-decoration: none;
+    color: rgb(255, 255, 255);
+    padding: 10px;
+    font-size: 1rem;
+    display: flex;
+    align-items: center;
+}
+
+.navbar .navbarMenu a:hover {        
+    background-color: rgb(76, 5, 13);            
+}
+
+.navbar a {
+    text-decoration: none;
+    color: rgb(255, 255, 255);        
+    padding: 10px;
+    font-size: 1rem;
+    display: flex;
+    align-items: center;
+}
+
+/*  */
+/* products */
+.itemList {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 1rem;    
+    justify-items: center;
+    padding: 1rem;
+}
+
+.item {
+    border-radius: 5px;
+    box-shadow: 0 2px 4px 0 rgba(0, 0, 0, 0.1);
+    padding: 10px;
+    font-size: 0.8rem;
+    color: rgb(76, 5, 13);    
+    width: 100%;
+    box-shadow: 5px 5px 10px 0px rgba(0, 0, 0, 0.20);
+}
+
+.item .itemHeader h2 {        
+    font-size: 1rem;
+    font-weight: bold;
+}
+
+.item .itemImage {            
+    width: 100%;
+}
+
+.item .itemSection .itemSectionBrand {
+    color: rgb(149, 177, 199);
+    text-transform: uppercase;
+    font-size: 0.8rem;
+    font-weight: bold;
+}
+
+.item .itemSection .itemSectionKeyValue span {
+    font-size: 0.8rem;
+}
+
+.item .itemSection .itemSectionKeyValue span:nth-child(1) {
+    /* font-size: 0.8rem; */
+    font-weight: bold;
+}
+
+.item .itemFooter a {
+    background-color: rgb(200, 41, 37);
+    color: rgb(255, 255, 255);
+    padding: 10px;
+    border: 0;
+    border-radius: 5px;
+    width: 100%;
+    display: block;
+    text-decoration: none;
+    margin-top: 0.5rem;
+    text-align: center;
+}
+
+.item .itemFooter a:hover {    
+    background-color: rgb(76, 5, 13);    
+}
+
+.pagination {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 1rem;
+    margin: 2rem 0;
+}
+
+.anchor a {
+    display: inline-block;
+    padding: 0.75rem 1.5rem;
+    background-color: rgb(200, 41, 37);
+    color: #fff;
+    text-decoration: none;
+    border-radius: 0.5rem;
+    font-weight: 500;
+    transition: background-color 0.2s ease,
+                transform 0.2s ease,
+                box-shadow 0.2s ease;
+}
+
+.anchor a:hover {
+    background-color: rgb(76, 5, 13);
+    color: #fff;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+}
+/*  */
+/* product */
+.itemDetail .itemDetailCard {
+    border-radius: 5px;
+    max-width: 250px;
+    box-shadow: 0 2px 4px 0 rgba(0, 0, 0, 0.1);
+    padding: 10px;
+    font-size: 0.8rem;
+    color: rgb(76, 5, 13);
+    box-shadow: 5px 5px 10px 0px rgba(0, 0, 0, 0.20);
+}
+
+.itemDetail .itemDetailCard .itemDetailCardHeader h2 {
+    font-size: 1rem;
+    font-weight: bold;
+}
+
+.itemDetail .itemDetailCard .itemDetailCardImage {
+    width: 100%;
+}
+
+.itemDetail .itemDetailCard .itemDetailCardSection .itemDetailCardSectionBrand {
+    color: rgb(149, 177, 199);
+    text-transform: uppercase;
+    font-size: 0.8rem;
+    font-weight: bold;
+}
+
+.itemDetail .itemDetailCard .itemDetailCardSection .itemDetailCardSectionKeyValue span {
+    font-size: 0.8rem;
+}
+
+.itemDetail .itemDetailCard .itemDetailCardSection .itemDetailCardSectionKeyValue span:nth-child(1) {
+    font-weight: bold;
+}
+
+.itemDetail .itemDetailCard .itemDetailCardFooter .itemDetailCardFooterButton {
+    background-color: rgb(200, 41, 37);
+    color: rgb(255, 255, 255);
+    padding: 10px;
+    border: 0;
+    border-radius: 5px;
+    width: 100%;
+    display: block;
+    text-decoration: none;
+    margin-top: 0.5rem;
+    text-align: center;
+}
+
+.itemDetail .itemDetailCard .itemDetailCardFooter .itemDetailCardFooterButton:hover {    
+    background-color: rgb(76, 5, 13);
+}
+/*  */
+/* cart */
+
+.cart {
+    display: grid;
+    grid-template-columns: 2fr 1fr;
+    gap: 1rem;
+    margin-top: 1rem;
+}
+
+.cart .cartProducts {
+    display: flex;
+    flex-direction: column;
+}
+
+.cart .cartProducts .cartProductsTitle {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+}
+
+.cart .cartProducts .cartProductsTitle .cartProductsTitleButton {
+    background-color: rgb(200, 41, 37);
+    color: rgb(255, 255, 255);
+    padding: 10px;
+    border: 0;
+    border-radius: 5px;
+    width: 100%;
+    display: block;
+    text-decoration: none;
+    margin-top: 0.5rem;
+    text-align: center;
+
+    width: auto;
+}
+
+.cart .cartProducts .cartProductsPanel {
+    padding: 1rem 0;            
+}
+
+.cart .cartResume {
+    display: flex;
+    flex-direction: column;
+}
+
+.cart .cartResume a {
+    background-color: rgb(200, 41, 37);
+    color: rgb(255, 255, 255);
+    padding: 10px;
+    border: 0;
+    border-radius: 5px;
+    width: 100%;
+    display: block;
+    text-decoration: none;
+    margin-top: 0.5rem;
+    text-align: center;
+}
+
+.cart .cartResume .cartResumeTotal {
+    font-weight: bold;
+}
+
+.cart .cartResume .cartResumeDisabledLink {
+    background-color: rgb(200, 41, 37);
+    color: rgb(255, 255, 255);
+    padding: 10px;
+    border: 0;
+    border-radius: 5px;
+    width: 100%;
+    display: block;
+    text-decoration: none;
+    margin-top: 0.5rem;
+    text-align: center;
+
+    pointer-events: none;
+    opacity: 0.5;
+    cursor: not-allowed;
+}
+/*  */
+/* cart item */
+.cartItem {
+    display: flex;
+    flex-direction: row;
+    margin: 10px;
+    box-shadow: 5px 5px 10px 0px rgba(0, 0, 0, 0.20);
+}
+
+.cartItem .cartItemImage {
+    width: 120px;
+    object-fit: cover;
+}
+
+.cartItem .cartItemSection {
+    display: flex;
+    flex-direction: column;
+    width: 100%;
+    padding: 10px;
+}
+
+.cartItem .cartItemSection .cartItemSectionName {
+    font-size: 1rem;
+    font-weight: bold;
+}
+
+.cartItem .cartItemSection .cartItemSectionBrand {
+    color: rgb(149, 177, 199);
+    text-transform: uppercase;
+    font-size: 0.8rem;
+    font-weight: bold;
+}
+
+.cartItem .cartItemSection .cartItemSectionKeyValue span {
+    font-size: 0.8rem;
+}
+
+.cartItem .cartItemSection .cartItemSectionKeyValue span:nth-child(1) {
+    font-weight: bold;
+}
+
+.cartItem .cartItemFooter {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    padding: 10px;
+}
+
+.cartItem .cartItemFooter .cartItemFooterItemCount {
+    background-color: rgb(200, 41, 37);
+    color: rgb(255, 255, 255);
+    padding: 10px;
+    border: 0;
+    border-radius: 5px;
+    width: 100%;
+    display: inline-block;
+    text-decoration: none;
+    margin-top: 0.5rem;
+    text-align: center;
+
+    width: 60px;
+    margin-right: 10px;
+}
+
+.cartItem .cartItemFooter .cartItemFooterButton {
+    background-color: rgb(200, 41, 37);
+    color: rgb(255, 255, 255);
+    padding: 10px;
+    border: 0;
+    border-radius: 5px;
+    width: 100%;
+    display: inline-block;
+    text-decoration: none;
+    margin-top: 0.5rem;
+    text-align: center;
+
+    width: auto;
+}
+
+/*  */

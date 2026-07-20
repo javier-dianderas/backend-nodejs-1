@@ -40,6 +40,11 @@ export const cartView = async (req, res) => {
     const cart = await cartsService.getCartById(req.params.cid);
 
     res.render("cart", {
-        cart
+        cart,
+        isEmpty: cart.items.length === 0,
+        total: cart.items.reduce(
+            (sum, item) => sum + item.product.price * item.quantity,
+            0
+        )
     });
 };

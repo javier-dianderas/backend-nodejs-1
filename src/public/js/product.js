@@ -48,7 +48,10 @@ btnAddCart.addEventListener("click", async () => {
             showDenyButton: true,
             showCancelButton: true,
             confirmButtonText: "Ir al carrito",
-            denyButtonText: `Volver al catálogo`
+            denyButtonText: `Volver al catálogo`,
+            confirmButtonColor: "rgb(200, 41, 37)",
+            cancelButtonColor: "rgb(200, 41, 37)",
+            denyButtonColor: "rgb(200, 41, 37)"
         }).then((result) => {
             if (result.isConfirmed) {
                 window.location.href = `/carts/${cartId}`;

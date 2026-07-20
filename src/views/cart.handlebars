@@ -1,31 +1,65 @@
-<h1>Mi carrito</h1>
+<div class="cart">
+    <div class="cartProducts">
+        <input type="hidden" id="cartId" value="{{cart.id}}">
+        <div class="cartProductsTitle">
+            <h3>Tu carrito</h3>
+        </div>
 
-<input type="hidden" id="cartId" value="{{cart.id}}">
-
-{{#each cart.items}}
-<div>
-
-    {{product.title}}
-
-    x {{quantity}}
-
-    = {{product.price}}
-
-    <button class="btn-add-1" data-product-id="{{product.id}}" data-quantity="{{quantity}}">
-        Incrementar 1
-    </button>
-    <button class="btn-minus-1" data-product-id="{{product.id}}" data-quantity="{{quantity}}">
-        Disminuir 1
-    </button>
-    <button class="btn-remove" data-product-id="{{product.id}}">
-        Eliminar
-    </button>
+        {{#if isEmpty}}
+            <div>No hay productos en el carrito</div>
+        {{else}}
+            <div class="cartProductsPanel">
+                {{#each cart.items}}
+                    <article class="cartItem">
+                        <picture>
+                            <img class="cartItemImage" src="{{product.image}}" />
+                        </picture>
+                        <section class="cartItemSection">
+                            <span class="cartItemSectionName">
+                                {{product.title}}
+                            </span>
+                            <span class="cartItemSectionBrand">
+                                {{product.code}}
+                            </span>
+                            <div class="cartItemSectionKeyValue">
+                                <span>Precio: </span>
+                                <span>$ {{product.price}}</span>
+                            </div>
+                            <div class="cartItemSectionKeyValue">
+                                <span>Stock disponible: </span>
+                                <span>{{product.stock}}</span>
+                            </div>
+                            <div class="cartItemSectionKeyValue">
+                                <span>Cantidad: </span>
+                                <span>{{quantity}}</span>
+                            </div>                
+                        </section>
+                        <footer class="cartItemFooter">
+                            <button class="btn-add-1 cartItemFooterItemCount" data-product-id="{{product.id}}" data-quantity="{{quantity}}">
+                                +1
+                            </button>
+                            <button class="btn-minus-1 cartItemFooterItemCount" data-product-id="{{product.id}}" data-quantity="{{quantity}}">
+                                -1
+                            </button>
+                            <button class="btn-remove cartItemFooterButton" data-product-id="{{product.id}}">
+                                Eliminar
+                            </button>
+                        </footer>
+                    </article>
+                {{/each}}
+            </div>
+        {{/if}}
+    </div>
+    <div class="cartResume">
+        <h3>Resumen del pedido</h3>
+        <span class="cartResumeTotal">Total: $ {{total}}</span>
+        {{#if isEmpty}}
+            <span class="cartResumeDisabledLink">Finalizar compra</span>
+        {{else}}
+            <a href="">Finalizar compra</a>
+        {{/if}}
+    </div>
 </div>
-{{/each}}
-
-<a href="/products">
-    Volver al catálogo
-</a>
 
 <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
 <script src="/socket.io/socket.io.js"></script>

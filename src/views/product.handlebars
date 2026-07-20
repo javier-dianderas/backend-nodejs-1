@@ -1,17 +1,36 @@
-<input type="hidden" id="productId" value="{{product.id}}">
+<div class="itemDetail">
+    <article class="itemDetailCard">
+        <input type="hidden" id="productId" value="{{product.id}}" />
+        <header class="itemDetailCardHeader">
+            <h2>{{product.title}}</h2>
+        </header>
+        <picture>
+            <img class="itemDetailCardImage" src={{product.image}} />
+        </picture>
+        <section class="itemDetailCardSection">
+            <span class="itemDetailCardSectionBrand">
+                {{product.code}}
+            </span>
+            <div class="itemDetailCardSectionKeyValue">
+                <span>Precio: </span>
+                <span>$ {{product.price}}</span>
+            </div>
+            <div class="itemDetailCardSectionKeyValue">
+                <span>Stock disponible: </span>
+                <span>{{product.stock}}</span>
+            </div>
+        </section>
+        <footer class="itemDetailCardFooter">
+            <button class="itemDetailCardFooterButton" id="btnAddCart">
+                Agregar al carrito
+            </button>
+            <a class="itemDetailCardFooterButton" href="/products">
+                Volver al catálogo
+            </a>
+        </footer>
+    </article>
+</div>
 
-<h1>{{product.title}}</h1>
-
-<p>{{product.description}}</p>
-
-<p>S/. {{product.price}}</p>
-
-<button id="btnAddCart">
-    Agregar al carrito
-</button>
-<a href="/products">
-    Volver al catálogo
-</a>
 
 <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
 <script src="/socket.io/socket.io.js"></script>

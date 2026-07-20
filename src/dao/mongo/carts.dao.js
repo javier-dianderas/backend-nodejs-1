@@ -1,7 +1,7 @@
 import { CartModel } from "../../models/cart.model.js";
 
 export const getCartById = async (cid) => {    
-    const cart = await CartModel.findById(cid).populate("items.product", "_id title price").lean();
+    const cart = await CartModel.findById(cid).populate("items.product", "_id title code stock price thumbnails").lean();
     return cart;
 };
 

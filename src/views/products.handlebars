@@ -1,23 +1,46 @@
-<h1>Productos</h1>
-
-{{#each productsDto}}
-<div class="card">
-    <h2>{{title}}</h2>
-    <p>{{price}}</p>
-
-    <a href="/products/{{id}}">
-        Ver detalle
-    </a>
+<div class="itemList">
+    {{#each productsDto}}
+    <article class="item">
+        <header class="itemHeader">
+            <h2>{{title}}</h2>
+        </header>
+        <picture>
+            <img class="itemImage" src={{image}} />
+        </picture>
+        <section class="itemSection">
+            <span class="itemSectionBrand">
+                {{category}}
+            </span>
+            <div class="itemSectionKeyValue">
+                <span>Precio: </span>
+                <span>$ {{price}}</span>
+            </div>
+            <div class="itemSectionKeyValue">
+                <span>Stock disponible: </span>
+                <span>{{stock}}</span>
+            </div>
+        </section>
+        <footer class="itemFooter">
+            <a href="/products/{{id}}">Ver detalle</a>
+        </footer>
+    </article>
+    {{/each}}
 </div>
-{{/each}}
 
-{{#if hasPrevPage}}
-<a href="{{prevLink}}">Anterior</a>
-{{/if}}
+<div class="pagination">
+    {{#if hasPrevPage}}
+    <div class="anchor">
+        <a href="{{prevLink}}">Anterior</a>
+    </div>
+    {{/if}}
 
-{{#if hasNextPage}}
-<a href="{{nextLink}}">Siguiente</a>
-{{/if}}
+    {{#if hasNextPage}}
+    <div class="anchor">
+        <a href="{{nextLink}}">Siguiente</a>
+    </div>
+    {{/if}}
+</div>
+
 
 <script src="/socket.io/socket.io.js"></script>
 <script src="/js/products.js"></script>

@@ -1,7 +1,10 @@
 const toCartProductDto = (product) => ({
     id: product._id,
+    code: product.code,
     title: product.title,
-    price: product.price
+    stock: product.stock,
+    price: product.price,
+    image: product.thumbnails?.[0] ?? null    
 });
 
 const toCartItemDto = (item) => ({

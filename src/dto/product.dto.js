@@ -8,6 +8,7 @@ export const toProductDto = (product) => ({
     stock: product.stock,
     category: product.category,
     thumbnails: product.thumbnails,
+    image: product.thumbnails?.[0] ?? null,
     updatedAt: product.updatedAt
 });
 
