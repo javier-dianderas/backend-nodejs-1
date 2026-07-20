@@ -16,14 +16,14 @@ const __dirname = path.dirname(__filename);
 //
 app.engine("handlebars", engine({
     defaultLayout: "main", // Layout por defecto o esqueleto principal
-    layoutsDir: path.join(process.cwd(), "./src/views/layouts"), // Carpeta de layouts
-    partialsDir: path.join(process.cwd(), "./src/views/partials"), // Carpeta de partials
+    layoutsDir: path.join(__dirname, "views", "layouts"), // Carpeta de layouts
+    partialsDir: path.join(__dirname, "views", "partials"), // Carpeta de partials
     helpers: {
         eq: (a, b) => a === b, // Helper para comparar igualdad
     }
 }));
 app.set("view engine", "handlebars");
-app.set("views", "./src/views");
+app.set("views", path.join(__dirname, "views"));
 
 app.use(express.static(path.join(__dirname, "public")));
 app.use(express.json());
