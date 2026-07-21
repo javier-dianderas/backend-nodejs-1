@@ -8,7 +8,6 @@ import cartQuantityItemSchema from "../../schemas/cart/cartQuantityItem.body.sch
 
 const router = express.Router();
 
-
 router.get(
     "/:cid", 
     validate(cartParamsSchema, "params"),
